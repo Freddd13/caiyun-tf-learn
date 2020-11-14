@@ -2,8 +2,7 @@ import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 import os
 
-import mnist_inference
-
+from mnist_fc import mnist_inference
 
 BATCH_SIZE = 100
 TRAIN_STEPS = 10000
@@ -12,7 +11,7 @@ LEARNING_RATE_DECAY = 0.99
 REGULARIZE_RATE = 0.0001
 MOVING_AVERAGE_DECAY = 0.99
 
-SAVE_PATH = './model/'
+SAVE_PATH = 'model/'
 MODEL_NAME = 'model.ckpt'
 
 

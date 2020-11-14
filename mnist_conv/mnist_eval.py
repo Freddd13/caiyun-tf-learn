@@ -1,6 +1,5 @@
 import tensorflow as tf
-import mnist_inference
-import mnist_train
+from mnist_fc import mnist_inference, mnist_train
 from tensorflow.examples.tutorials.mnist import input_data
 import time
 
