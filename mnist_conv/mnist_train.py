@@ -3,7 +3,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 import os
 import numpy as np
 
-from mnist_fc import mnist_inference
+from mnist_conv import mnist_inference
 
 BATCH_SIZE = 100
 TRAIN_STEPS = 10000

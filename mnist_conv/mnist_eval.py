@@ -1,5 +1,6 @@
 import tensorflow as tf
-from mnist_fc import mnist_inference, mnist_train
+from mnist_conv import mnist_train
+from mnist_conv import mnist_inference
 from tensorflow.examples.tutorials.mnist import input_data
 import time
 import numpy as np
@@ -16,10 +17,10 @@ def evaluate(mnist):
         y_ = tf.placeholder(tf.float32, shape=[None, mnist_inference.OUTPUT_NODE], name='y-input')
 
         tmp_shape = mnist.validation.images.shape
-        x_feed = np.reshape(mnist.validation.images,[tmp_shape[0],
-                                                     mnist_inference.INPUT_NODE,
-                                                     mnist_inference.INPUT_NODE,
-                                                     mnist_inference.INPUT_CHANNEL])
+        x_feed = np.reshape(mnist.validation.images, [tmp_shape[0],
+                                                      mnist_inference.INPUT_NODE,
+                                                      mnist_inference.INPUT_NODE,
+                                                      mnist_inference.INPUT_CHANNEL])
         validation_feed = {x:x_feed, y_:mnist.validation.labels}
 
         y = mnist_inference.inference(x, None)
