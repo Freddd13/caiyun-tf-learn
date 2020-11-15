@@ -2,15 +2,25 @@ import tensorflow as tf
 from mnist_fc import mnist_inference, mnist_train
 from tensorflow.examples.tutorials.mnist import input_data
 import time
+import numpy as np
 
 EVALUATE_INTERVAL = 10
 
 
 def evaluate(mnist):
     with tf.Graph().as_default() as g:
-        x = tf.placeholder(tf.float32, [None, mnist_inference.INPUT_NODE], name='x-input')
-        y_ = tf.placeholder(tf.float32, [None, mnist_inference.OUTPUT_NODE], name='y-input')
-        validation_feed = {x:mnist.validation.images, y_:mnist.validation.labels}
+        x = tf.placeholder(tf.float32, shape=[None,
+                                              mnist_inference.INPUT_NODE,
+                                              mnist_inference.INPUT_NODE,
+                                              mnist_inference.INPUT_CHANNEL], name='x-input')
+        y_ = tf.placeholder(tf.float32, shape=[None, mnist_inference.OUTPUT_NODE], name='y-input')
+
+        tmp_shape = mnist.validation.images.shape
+        x_feed = np.reshape(mnist.validation.images,[tmp_shape[0],
+                                                     mnist_inference.INPUT_NODE,
+                                                     mnist_inference.INPUT_NODE,
+                                                     mnist_inference.INPUT_CHANNEL])
+        validation_feed = {x:x_feed, y_:mnist.validation.labels}
 
         y = mnist_inference.inference(x, None)
         correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))

@@ -12,10 +12,10 @@ OUTPUT_NODE = 10
 
 
 def get_weights_variable(shape, regularizer):
-    print('-'*50 + '\n',shape)
+    # print('-'*50 + '\n',shape)
     weights = tf.get_variable("weights", shape, initializer=tf.truncated_normal_initializer(stddev=0.1))
     if regularizer != None:
-        print('add to collection')
+        # print('add to collection')
         tf.add_to_collection('losses', regularizer(weights))
     return weights
 
@@ -56,7 +56,8 @@ def inference(input_tensor, regularizer):
                                    initializer=tf.constant_initializer(0.1))
         fc1 = tf.nn.relu(fc1_input @ fc1_weight + fc1_bias)
         # if train====
-        fc1 = tf.nn.dropout(fc1, 0.5)
+        if regularizer is not None:
+            fc1 = tf.nn.dropout(fc1, 0.5)
 
     with tf.variable_scope("layer6-fc2"):
         fc2_weight = get_weights_variable([FC_SIZE, OUTPUT_NODE], regularizer)

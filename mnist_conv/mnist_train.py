@@ -60,7 +60,8 @@ def train(mnist):
             if step % 1000 == 0:
                 # 每1000轮保存一次模型
                 saver.save(sess, os.path.join(SAVE_PATH, MODEL_NAME),global_step=global_step)
-            print("Step %d : loss is %f, model saved." % (step_value, loss_value))
+                print("===== Step %d : loss is %f, model saved. =====" % (step_value, loss_value))
+            print("Step %d: loss is %f." % (step_value, loss_value))
         print("After %d steps' training, loss is %f" % (TRAIN_STEPS, sess.run(loss, feed_dict={x:xs, y_:ys})))
 
 def main(argv = None):
