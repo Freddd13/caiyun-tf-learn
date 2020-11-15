@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 import os
+import numpy as np
 
 from mnist_fc import mnist_inference
 
@@ -16,7 +17,10 @@ MODEL_NAME = 'model.ckpt'
 
 
 def train(mnist):
-    x = tf.placeholder(tf.float32, shape=[None, mnist_inference.INPUT_NODE], name='x-input')
+    x = tf.placeholder(tf.float32, shape=[None,
+                                          mnist_inference.INPUT_NODE,
+                                          mnist_inference.INPUT_NODE,
+                                          mnist_inference.INPUT_CHANNEL], name='x-input')
     y_ = tf.placeholder(tf.float32, shape = [None, mnist_inference.OUTPUT_NODE], name='y-input')
     # 正则化
     regularizer = tf.contrib.layers.l2_regularizer(REGULARIZE_RATE)
@@ -47,12 +51,16 @@ def train(mnist):
 
         for step in range(TRAIN_STEPS):
             xs, ys = mnist.train.next_batch(BATCH_SIZE)
+            xs = np.reshape(xs, (BATCH_SIZE,
+                                 mnist_inference.INPUT_NODE,
+                                 mnist_inference.INPUT_NODE,
+                                 mnist_inference.INPUT_CHANNEL))
             _, loss_value, step_value = sess.run([train_op, loss, global_step], feed_dict={x:xs, y_:ys})
 
             if step % 1000 == 0:
                 # 每1000轮保存一次模型
                 saver.save(sess, os.path.join(SAVE_PATH, MODEL_NAME),global_step=global_step)
-                print("Step %d : loss is %f, model saved." % (step_value, loss_value))
+            print("Step %d : loss is %f, model saved." % (step_value, loss_value))
         print("After %d steps' training, loss is %f" % (TRAIN_STEPS, sess.run(loss, feed_dict={x:xs, y_:ys})))
 
 def main(argv = None):
